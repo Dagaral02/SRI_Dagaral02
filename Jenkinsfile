@@ -1,17 +1,24 @@
 pipeline{
 
-	agent {label 'NodeSSH'}
+	agent {label 'VPS'}
 
 	environment {
-		DOCKERHUB_CREDENTIALS=credentials('dockerhub_id')
+		DOCKERHUB_CREDENTIALS=credentials('DockerHub')
 	}
 
 	stages {
+	    
+	    stage('gitclone') {
+
+			steps {
+				git branch: 'main', url:'https://github.com/Dagaral02/SRI_Dagaral02'
+			}
+		}
 
 		stage('Build') {
 
 			steps {
-				sh 'docker build -t jalakon/jenkinsfile:latest .'
+				sh 'docker build -t dagaral02/jenkins:latest .'
 			}
 		}
 
@@ -25,7 +32,7 @@ pipeline{
 		stage('Push') {
 
 			steps {
-				sh 'docker push jalakon/jenkinsfile:latest'
+				sh 'docker push dagaral02/jenkins:latest'
 			}
 		}
 	}
